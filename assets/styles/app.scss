@@ -1,10 +1,9 @@
 // Default variable overrides
 @import "variables";
 
-
 // Bootstrap variables
 @import "../../vendor/twbs/bootstrap/scss/bootstrap";
 
 body {
-    background-color: rgb(235, 135, 135);
+    background-color: $background-color;
 }
