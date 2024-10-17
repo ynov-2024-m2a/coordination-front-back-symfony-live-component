@@ -10,6 +10,8 @@ return [[
 
 0 => [
     '3658285e3d0e485586060c3bb9518c50' => 'base.html.twig',
+    'b847331198a1af6a5f20baa4cdd4358f' => 'user/index.html.twig',
+    '9f9b7cae81f9872f78c0e9905c09e878' => 'components/Alert.html.twig',
     '53bfaa9da4e001c9b968a1b2035e9d56' => '@Doctrine/Collector/explain.html.twig',
     'bacaa01aa228aad531711db732eea56d' => '@Doctrine/Collector/db.html.twig',
     'ce3e921c077fb5f413a3ed2d683d58e9' => '@DoctrineMigrations/Collector/migrations.html.twig',

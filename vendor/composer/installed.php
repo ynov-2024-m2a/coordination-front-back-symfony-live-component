@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '7b83a0fde11804ccfb634420b3481d339bba5e15',
+        'reference' => '9733c08aa7794349521a8316d9e4794b731546bd',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '7b83a0fde11804ccfb634420b3481d339bba5e15',
+            'reference' => '9733c08aa7794349521a8316d9e4794b731546bd',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1229,6 +1229,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'symfony/ux-icons' => array(
+            'pretty_version' => 'v2.20.0',
+            'version' => '2.20.0.0',
+            'reference' => '07328c6d3cf480f7d5dafdf621f0d54323e23035',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../symfony/ux-icons',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/ux-live-component' => array(
             'pretty_version' => 'v2.20.0',
             'version' => '2.20.0.0',
@@ -1310,6 +1319,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'symfonycasts/sass-bundle' => array(
+            'pretty_version' => 'v0.8.0',
+            'version' => '0.8.0.0',
+            'reference' => 'bcf4112946fa2b635d3516ca63b4ec5904958c38',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfonycasts/sass-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'theseer/tokenizer' => array(
             'pretty_version' => '1.2.3',
             'version' => '1.2.3.0',
@@ -1318,6 +1336,24 @@
             'install_path' => __DIR__ . '/../theseer/tokenizer',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'thomaspark/bootswatch' => array(
+            'pretty_version' => 'v5.3.3',
+            'version' => '5.3.3.0',
+            'reference' => '646c94da2c262473c6f73664f4547c046f3a28dd',
+            'type' => 'component',
+            'install_path' => __DIR__ . '/../thomaspark/bootswatch',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'twbs/bootstrap' => array(
+            'pretty_version' => 'v5.3.3',
+            'version' => '5.3.3.0',
+            'reference' => '6e1f75f420f68e1d52733b8e407fc7c3766c9dba',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twbs/bootstrap',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'twig/extra-bundle' => array(
             'pretty_version' => 'v3.13.0',
@@ -1336,6 +1372,12 @@
             'install_path' => __DIR__ . '/../twig/twig',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'twitter/bootstrap' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v5.3.3',
+            ),
         ),
         'webmozart/assert' => array(
             'pretty_version' => '1.11.0',

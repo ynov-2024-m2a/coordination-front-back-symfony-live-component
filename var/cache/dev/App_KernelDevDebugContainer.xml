@@ -27,6 +27,8 @@
       <parameter key="MakerBundle">Symfony\Bundle\MakerBundle\MakerBundle</parameter>
       <parameter key="TwigComponentBundle">Symfony\UX\TwigComponent\TwigComponentBundle</parameter>
       <parameter key="LiveComponentBundle">Symfony\UX\LiveComponent\LiveComponentBundle</parameter>
+      <parameter key="UXIconsBundle">Symfony\UX\Icons\UXIconsBundle</parameter>
+      <parameter key="SymfonycastsSassBundle">Symfonycasts\SassBundle\SymfonycastsSassBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -84,6 +86,14 @@
       <parameter key="LiveComponentBundle" type="collection">
         <parameter key="path">/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/ux-live-component</parameter>
         <parameter key="namespace">Symfony\UX\LiveComponent</parameter>
+      </parameter>
+      <parameter key="UXIconsBundle" type="collection">
+        <parameter key="path">/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/ux-icons</parameter>
+        <parameter key="namespace">Symfony\UX\Icons</parameter>
+      </parameter>
+      <parameter key="SymfonycastsSassBundle" type="collection">
+        <parameter key="path">/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfonycasts/sass-bundle/src</parameter>
+        <parameter key="namespace">Symfonycasts\SassBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -225,6 +235,7 @@
     <parameter key="twig.form.resources" type="collection">
       <parameter>form_div_layout.html.twig</parameter>
       <parameter>@LiveComponent/form_theme.html.twig</parameter>
+      <parameter>bootstrap_5_layout.html.twig</parameter>
     </parameter>
     <parameter key="twig.default_path">/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/templates</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
@@ -362,6 +373,19 @@
     <service id="kernel" class="App\Kernel" public="true" synthetic="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
+    </service>
+    <service id="App\Entity" class="App\Entity" abstract="true">
+      <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
+    </service>
+    <service id="App\Controller\UserController" class="App\Controller\UserController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.QaaoWjx.App\Controller\UserController"/>
+      </call>
+    </service>
+    <service id="App\Twig\Components\Alert" class="App\Twig\Components\Alert" shared="false" autowire="true" autoconfigure="true">
+      <tag name="twig.component" expose_public_props="1" attributes_var="attributes"/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
@@ -1686,9 +1710,6 @@
       <argument>true</argument>
       <argument>true</argument>
     </service>
-    <service id="asset_mapper.public_assets_path_resolver" class="Symfony\Component\AssetMapper\Path\PublicAssetsPathResolver">
-      <argument>/assets/</argument>
-    </service>
     <service id="asset_mapper.local_public_assets_filesystem" class="Symfony\Component\AssetMapper\Path\LocalPublicAssetsFilesystem">
       <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/public</argument>
     </service>
@@ -2346,6 +2367,8 @@
           <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/maker-bundle/src/translations</argument>
           <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/ux-twig-component/translations</argument>
           <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/ux-live-component/translations</argument>
+          <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfony/ux-icons/translations</argument>
+          <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/vendor/symfonycasts/sass-bundle/src/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -2367,6 +2390,8 @@
             <argument>vendor/symfony/maker-bundle/src/translations</argument>
             <argument>vendor/symfony/ux-twig-component/translations</argument>
             <argument>vendor/symfony/ux-live-component/translations</argument>
+            <argument>vendor/symfony/ux-icons/translations</argument>
+            <argument>vendor/symfonycasts/sass-bundle/src/translations</argument>
           </argument>
         </argument>
       </argument>
@@ -2737,6 +2762,30 @@
         <argument type="collection">
           <argument type="service_closure" id="security.context_listener.0"/>
           <argument>onKernelResponse</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\UX\TwigComponent\Event\PreCreateForRenderEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id=".ux_icons.twig_component_listener"/>
+          <argument>onPreCreateForRender</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\AssetMapper\Event\PreAssetsCompileEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id=".ux_icons.event_listener.warm_icon_cache_on_asset_compile"/>
+          <argument>__invoke</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\AssetMapper\Event\PreAssetsCompileEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="sass.listener.pre_assets_compile"/>
+          <argument>__invoke</argument>
         </argument>
         <argument>0</argument>
       </call>
@@ -5877,6 +5926,9 @@
         <argument type="service" id="ux.live_component.twig.component_extension"/>
       </call>
       <call method="addExtension">
+        <argument type="service" id=".ux_icons.twig_icon_extension"/>
+      </call>
+      <call method="addExtension">
         <argument type="service" id="stimulus.twig_extension"/>
       </call>
       <call method="addGlobal">
@@ -6078,7 +6130,7 @@
       <argument type="service" id="twig"/>
     </service>
     <service id="twig.runtime_loader" class="Twig\RuntimeLoader\ContainerRuntimeLoader">
-      <argument type="service" id=".service_locator.h43Lps0"/>
+      <argument type="service" id=".service_locator.Oqg00UQ"/>
     </service>
     <service id="twig.error_renderer.html" class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer">
       <argument type="service" id="twig"/>
@@ -7221,11 +7273,29 @@
     </service>
     <service id="ux.twig_component.component_factory" class="Symfony\UX\TwigComponent\ComponentFactory">
       <argument type="service" id="ux.twig_component.component_template_finder"/>
-      <argument type="service" id=".service_locator.GIuJv7e"/>
+      <argument type="service" id=".service_locator.GxWCLfn"/>
       <argument type="service" id="property_accessor"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument type="collection"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="Alert" type="collection">
+          <argument key="expose_public_props">true</argument>
+          <argument key="attributes_var">attributes</argument>
+          <argument key="key">Alert</argument>
+          <argument key="service_id">App\Twig\Components\Alert</argument>
+          <argument key="class">App\Twig\Components\Alert</argument>
+          <argument key="template">components/Alert.html.twig</argument>
+        </argument>
+        <argument key="UX:Icon" type="collection">
+          <argument key="key">UX:Icon</argument>
+          <argument key="service_id">.ux_icons.twig_component.icon</argument>
+          <argument key="class">Symfony\UX\Icons\Twig\UXIconComponent</argument>
+          <argument key="template">components/UX/Icon.html.twig</argument>
+        </argument>
+      </argument>
+      <argument type="collection">
+        <argument key="App\Twig\Components\Alert">Alert</argument>
+        <argument key="Symfony\UX\Icons\Twig\UXIconComponent">UX:Icon</argument>
+      </argument>
     </service>
     <service id="ux.twig_component.component_stack" class="Symfony\UX\TwigComponent\ComponentStack"/>
     <service id="ux.twig_component.component_renderer" class="Symfony\UX\TwigComponent\ComponentRenderer">
@@ -7253,7 +7323,10 @@
       <argument>%twig.default_path%</argument>
       <argument type="service" id="ux.twig_component.component_factory"/>
       <argument type="service" id="twig"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="App\Twig\Components\Alert">Alert</argument>
+        <argument key="Symfony\UX\Icons\Twig\UXIconComponent">UX:Icon</argument>
+      </argument>
       <argument>components/</argument>
       <call method="setName">
         <argument>debug:twig-component</argument>
@@ -7392,6 +7465,158 @@
       <argument>live_components_twig_templates.map</argument>
       <argument>%env(APP_SECRET)%</argument>
     </service>
+    <service id=".ux_icons.cache_icon_registry" class="Symfony\UX\Icons\Registry\CacheIconRegistry">
+      <argument type="service" id=".ux_icons.chain_registry"/>
+      <argument type="service" id="cache.system"/>
+    </service>
+    <service id=".ux_icons.local_svg_icon_registry" class="Symfony\UX\Icons\Registry\LocalSvgIconRegistry">
+      <tag name="ux_icons.registry" priority="10"/>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/assets/icons</argument>
+      <argument type="collection"/>
+    </service>
+    <service id=".ux_icons.chain_registry" class="Symfony\UX\Icons\Registry\ChainIconRegistry">
+      <argument type="tagged_iterator" tag="ux_icons.registry"/>
+    </service>
+    <service id=".ux_icons.twig_icon_extension" class="Symfony\UX\Icons\Twig\UXIconExtension">
+      <tag name="twig.extension"/>
+    </service>
+    <service id=".ux_icons.twig_icon_runtime" class="Symfony\UX\Icons\Twig\UXIconRuntime">
+      <tag name="twig.runtime"/>
+      <argument type="service" id=".ux_icons.icon_renderer"/>
+      <argument>false</argument>
+      <argument type="service" id="monolog.logger" on-invalid="ignore"/>
+    </service>
+    <service id=".ux_icons.icon_renderer" class="Symfony\UX\Icons\IconRenderer">
+      <argument type="service" id=".ux_icons.cache_icon_registry"/>
+      <argument type="collection">
+        <argument key="fill">currentColor</argument>
+      </argument>
+      <argument type="collection"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".ux_icons.icon_finder" class="Symfony\UX\Icons\Twig\IconFinder">
+      <argument type="service" id="twig"/>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/assets/icons</argument>
+    </service>
+    <service id=".ux_icons.cache_warmer" class="Symfony\UX\Icons\IconCacheWarmer">
+      <argument type="service" id=".ux_icons.cache_icon_registry"/>
+      <argument type="service" id=".ux_icons.icon_finder"/>
+    </service>
+    <service id=".ux_icons.command.warm_cache" class="Symfony\UX\Icons\Command\WarmCacheCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id=".ux_icons.cache_warmer"/>
+      <call method="setName">
+        <argument>ux:icons:warm-cache</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Warm the icon cache</argument>
+      </call>
+    </service>
+    <service id=".ux_icons.twig_component_listener" class="Symfony\UX\Icons\Twig\UXIconComponentListener">
+      <tag name="kernel.event_listener" event="Symfony\UX\TwigComponent\Event\PreCreateForRenderEvent" method="onPreCreateForRender"/>
+      <argument type="service" id=".ux_icons.icon_renderer"/>
+    </service>
+    <service id=".ux_icons.twig_component.icon" class="Symfony\UX\Icons\Twig\UXIconComponent" shared="false">
+      <tag name="twig.component" key="UX:Icon"/>
+    </service>
+    <service id=".ux_icons.event_listener.warm_icon_cache_on_asset_compile" class="Symfony\UX\Icons\EventListener\WarmIconCacheOnAssetCompileListener">
+      <tag name="kernel.event_listener" event="Symfony\Component\AssetMapper\Event\PreAssetsCompileEvent" method="__invoke"/>
+      <argument type="service" id=".ux_icons.cache_warmer"/>
+    </service>
+    <service id=".ux_icons.iconify_on_demand_registry" class="Symfony\UX\Icons\Registry\IconifyOnDemandRegistry">
+      <tag name="ux_icons.registry"/>
+      <argument type="service" id=".ux_icons.iconify"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".ux_icons.iconify" class="Symfony\UX\Icons\Iconify">
+      <argument type="service" id="cache.system"/>
+      <argument>https://api.iconify.design</argument>
+      <argument type="service" id=".debug.http_client" on-invalid="null"/>
+    </service>
+    <service id=".ux_icons.command.import" class="Symfony\UX\Icons\Command\ImportIconCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id=".ux_icons.iconify"/>
+      <argument type="service" id=".ux_icons.local_svg_icon_registry"/>
+      <call method="setName">
+        <argument>ux:icons:import</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Import icon(s) from iconify.design</argument>
+      </call>
+    </service>
+    <service id=".ux_icons.command.lock" class="Symfony\UX\Icons\Command\LockIconsCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id=".ux_icons.iconify"/>
+      <argument type="service" id=".ux_icons.local_svg_icon_registry"/>
+      <argument type="service" id=".ux_icons.icon_finder"/>
+      <call method="setName">
+        <argument>ux:icons:lock</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Scan project and import icon(s) from iconify.design</argument>
+      </call>
+    </service>
+    <service id=".ux_icons.command.search" class="Symfony\UX\Icons\Command\SearchIconCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id=".ux_icons.iconify"/>
+      <call method="setName">
+        <argument>ux:icons:search</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Search icons and icon sets from ux.symfony.com</argument>
+      </call>
+    </service>
+    <service id="sass.builder" class="Symfonycasts\SassBundle\SassBuilder">
+      <argument type="collection">
+        <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/assets/styles/app.scss</argument>
+      </argument>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/var/sass</argument>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component</argument>
+      <argument>null</argument>
+      <argument type="collection">
+        <argument key="style">expanded</argument>
+        <argument key="source_map">true</argument>
+        <argument key="embed_source_map">true</argument>
+        <argument key="load_path" type="collection"/>
+      </argument>
+    </service>
+    <service id="sass.command.build" class="Symfonycasts\SassBundle\Command\SassBuildCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="sass.builder"/>
+      <call method="setName">
+        <argument>sass:build</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Builds the Sass assets</argument>
+      </call>
+    </service>
+    <service id="sass.css_asset_compiler" class="Symfonycasts\SassBundle\AssetMapper\SassCssCompiler">
+      <tag name="asset_mapper.compiler" priority="10"/>
+      <argument type="collection">
+        <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/assets/styles/app.scss</argument>
+      </argument>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/var/sass</argument>
+      <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component</argument>
+      <argument type="service" id="sass.builder"/>
+    </service>
+    <service id="sass.public_asset_path_resolver" class="Symfonycasts\SassBundle\AssetMapper\SassPublicPathAssetPathResolver">
+      <tag name="container.decorator" id="asset_mapper.public_assets_path_resolver" inner="sass.public_asset_path_resolver.inner"/>
+      <argument type="service" id="sass.public_asset_path_resolver.inner"/>
+    </service>
+    <service id="sass.listener.pre_assets_compile" class="Symfonycasts\SassBundle\Listener\PreAssetsCompileEventListener">
+      <tag name="kernel.event_listener" event="Symfony\Component\AssetMapper\Event\PreAssetsCompileEvent" method="__invoke"/>
+      <argument type="service" id="sass.builder"/>
+    </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\UserController" class="App\Controller\UserController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\UserController" class="App\Controller\UserController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.App\Twig\Components\Alert.0.App\Twig\Components\Alert" class="App\Twig\Components\Alert" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Twig\Components\Alert" class="App\Twig\Components\Alert" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.pRu6x_4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8430,6 +8655,13 @@
       <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
     </service>
     <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
+    <service id=".service_locator.GxWCLfn" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="Alert" type="service_closure" id="App\Twig\Components\Alert"/>
+        <argument key="UX:Icon" type="service_closure" id=".ux_icons.twig_component.icon"/>
+      </argument>
+    </service>
     <service id=".service_locator.ILdUWIS" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8445,6 +8677,28 @@
         <argument key="translation.loader.ini" type="service_closure" id="translation.loader.ini"/>
         <argument key="translation.loader.json" type="service_closure" id="translation.loader.json"/>
       </argument>
+    </service>
+    <service id=".service_locator.QaaoWjx" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="router" type="service_closure" id="router.default" on-invalid="ignore"/>
+        <argument key="request_stack" type="service_closure" id="request_stack" on-invalid="ignore"/>
+        <argument key="http_kernel" type="service_closure" id="http_kernel" on-invalid="ignore"/>
+        <argument key="serializer" type="service_closure" id="debug.serializer" on-invalid="ignore"/>
+        <argument key="security.authorization_checker" type="service_closure" id="security.authorization_checker" on-invalid="ignore"/>
+        <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
+        <argument key="form.factory" type="service_closure" id="form.factory" on-invalid="ignore"/>
+        <argument key="security.token_storage" type="service_closure" id="security.token_storage" on-invalid="ignore"/>
+        <argument key="security.csrf.token_manager" type="service_closure" id="security.csrf.token_manager" on-invalid="ignore"/>
+        <argument key="parameter_bag" type="service_closure" id="parameter_bag" on-invalid="ignore"/>
+        <argument key="web_link.http_header_serializer" type="service_closure" id="web_link.http_header_serializer" on-invalid="ignore"/>
+      </argument>
+    </service>
+    <service id=".service_locator.QaaoWjx.App\Controller\UserController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\UserController"/>
+      <argument>App\Controller\UserController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.QaaoWjx" method="withContext"/>
     </service>
     <service id=".service_locator.DMfgFyO" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -8671,7 +8925,7 @@
       <factory function="current"/>
     </service>
     <service id="asset_mapper.cached_mapped_asset_factory.inner" class="Symfony\Component\AssetMapper\Factory\MappedAssetFactory">
-      <argument type="service" id="asset_mapper.public_assets_path_resolver"/>
+      <argument type="service" id="sass.public_asset_path_resolver"/>
       <argument type="service" id="asset_mapper_compiler"/>
       <argument>/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/assets/vendor</argument>
     </service>
@@ -8693,6 +8947,7 @@
       <call method="allowControllers">
         <argument type="collection">
           <argument>App\Kernel</argument>
+          <argument>App\Controller\UserController</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
       </call>
@@ -8876,6 +9131,9 @@
       <argument>0</argument>
       <argument>.</argument>
       <argument>,</argument>
+    </service>
+    <service id="sass.public_asset_path_resolver.inner" class="Symfony\Component\AssetMapper\Path\PublicAssetsPathResolver">
+      <argument>/assets/</argument>
     </service>
     <service id="debug.security.event_dispatcher.main.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
@@ -9395,6 +9653,41 @@
       <argument>false</argument>
       <argument type="service_closure" id="ux.twig_component.command.debug"/>
     </service>
+    <service id="..ux_icons.command.warm_cache.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>ux:icons:warm-cache</argument>
+      <argument type="collection"/>
+      <argument>Warm the icon cache</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id=".ux_icons.command.warm_cache"/>
+    </service>
+    <service id="..ux_icons.command.import.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>ux:icons:import</argument>
+      <argument type="collection"/>
+      <argument>Import icon(s) from iconify.design</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id=".ux_icons.command.import"/>
+    </service>
+    <service id="..ux_icons.command.lock.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>ux:icons:lock</argument>
+      <argument type="collection"/>
+      <argument>Scan project and import icon(s) from iconify.design</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id=".ux_icons.command.lock"/>
+    </service>
+    <service id="..ux_icons.command.search.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>ux:icons:search</argument>
+      <argument type="collection"/>
+      <argument>Search icons and icon sets from ux.symfony.com</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id=".ux_icons.command.search"/>
+    </service>
+    <service id=".sass.command.build.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>sass:build</argument>
+      <argument type="collection"/>
+      <argument>Builds the Sass assets</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="sass.command.build"/>
+    </service>
     <service id=".maker.auto_command.make_auth.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>make:auth</argument>
       <argument type="collection"/>
@@ -9591,7 +9884,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.7q.jnN_"/>
+      <argument type="service" id=".service_locator.YLHtjgR"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -9680,6 +9973,11 @@
         <argument key="debug:firewall">security.command.debug_firewall</argument>
         <argument key="security:hash-password">security.command.user_password_hash</argument>
         <argument key="debug:twig-component">ux.twig_component.command.debug</argument>
+        <argument key="ux:icons:warm-cache">.ux_icons.command.warm_cache</argument>
+        <argument key="ux:icons:import">.ux_icons.command.import</argument>
+        <argument key="ux:icons:lock">.ux_icons.command.lock</argument>
+        <argument key="ux:icons:search">.ux_icons.command.search</argument>
+        <argument key="sass:build">sass.command.build</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:twig-component">maker.auto_command.make_twig_component</argument>
@@ -9712,7 +10010,7 @@
         <argument key="make:webhook">maker.auto_command.make_webhook</argument>
       </argument>
     </service>
-    <service id=".service_locator.7q.jnN_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.YLHtjgR" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
@@ -9802,6 +10100,11 @@
         <argument key="security.command.debug_firewall" type="service_closure" id=".security.command.debug_firewall.lazy"/>
         <argument key="security.command.user_password_hash" type="service_closure" id=".security.command.user_password_hash.lazy"/>
         <argument key="ux.twig_component.command.debug" type="service_closure" id=".ux.twig_component.command.debug.lazy"/>
+        <argument key=".ux_icons.command.warm_cache" type="service_closure" id="..ux_icons.command.warm_cache.lazy"/>
+        <argument key=".ux_icons.command.import" type="service_closure" id="..ux_icons.command.import.lazy"/>
+        <argument key=".ux_icons.command.lock" type="service_closure" id="..ux_icons.command.lock.lazy"/>
+        <argument key=".ux_icons.command.search" type="service_closure" id="..ux_icons.command.search.lazy"/>
+        <argument key="sass.command.build" type="service_closure" id=".sass.command.build.lazy"/>
         <argument key="maker.auto_command.make_auth" type="service_closure" id=".maker.auto_command.make_auth.lazy"/>
         <argument key="maker.auto_command.make_command" type="service_closure" id=".maker.auto_command.make_command.lazy"/>
         <argument key="maker.auto_command.make_twig_component" type="service_closure" id=".maker.auto_command.make_twig_component.lazy"/>
@@ -9923,7 +10226,7 @@
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
-    <service id=".service_locator.h43Lps0" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Oqg00UQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="Symfony\Bridge\Twig\Extension\CsrfRuntime" type="service_closure" id="twig.runtime.security_csrf"/>
@@ -9934,6 +10237,7 @@
         <argument key="Symfony\UX\StimulusBundle\Twig\UxControllersTwigRuntime" type="service_closure" id="stimulus.ux_controllers_twig_runtime"/>
         <argument key="Symfony\UX\TwigComponent\Twig\ComponentRuntime" type="service_closure" id=".ux.twig_component.twig.component_runtime"/>
         <argument key="Symfony\UX\LiveComponent\Twig\LiveComponentRuntime" type="service_closure" id="ux.live_component.twig.component_runtime"/>
+        <argument key="Symfony\UX\Icons\Twig\UXIconRuntime" type="service_closure" id=".ux_icons.twig_icon_runtime"/>
       </argument>
     </service>
     <service id="App\Kernel" alias="kernel" public="true"/>
@@ -10077,6 +10381,8 @@
     </service>
     <service id="Symfony\UX\LiveComponent\LiveResponder" alias="ux.live_component.live_responder"/>
     <service id="Symfony\UX\LiveComponent\ComponentValidatorInterface" alias="Symfony\UX\LiveComponent\ComponentValidator"/>
+    <service id=".ux_icons.icon_registry" alias=".ux_icons.cache_icon_registry"/>
+    <service id="Symfony\UX\Icons\IconRendererInterface" alias=".ux_icons.icon_renderer"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
     <service id="argument_resolver.controller_locator" alias=".service_locator.dyzWi7x"/>
@@ -10119,9 +10425,11 @@
     <service id="security.access.decision_manager" alias="debug.security.access.decision_manager"/>
     <service id="security.firewall.authenticator.main" alias="debug.security.firewall.authenticator.main"/>
     <service id="twig.configurator.environment" alias="ux.twig_component.twig.environment_configurator"/>
+    <service id="asset_mapper.public_assets_path_resolver" alias="sass.public_asset_path_resolver"/>
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
     <service id="messenger.bus.default" alias="debug.traced.messenger.bus.default"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.diNoEIK" alias=".service_locator.4wc4Ag1"/>
+    <service id=".service_locator.b491maD" alias=".service_locator.QaaoWjx"/>
   </services>
 </container>

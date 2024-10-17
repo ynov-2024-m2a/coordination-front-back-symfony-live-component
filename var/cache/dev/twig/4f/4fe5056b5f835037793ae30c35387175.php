@@ -73,7 +73,7 @@ class __TwigTemplate_696e83af48346f991db37456513a62f6 extends Template
         ";
         // line 15
         yield from $this->unwrap()->yieldBlock('body', $context, $blocks);
-        // line 16
+        // line 19
         yield "    </body>
 </html>
 ";
@@ -196,6 +196,15 @@ class __TwigTemplate_696e83af48346f991db37456513a62f6 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
+        // line 16
+        yield "            ";
+        yield $this->env->getRuntime('Symfony\UX\TwigComponent\Twig\ComponentRuntime')->render("Alert", ["message" => "I am a success alert!"]);
+        yield "
+            ";
+        // line 17
+        yield $this->env->getRuntime('Symfony\UX\TwigComponent\Twig\ComponentRuntime')->render("Alert", ["type" => "danger", "message" => "Oh no! The dinos escaped!"]);
+        yield "
+        ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -218,7 +227,7 @@ class __TwigTemplate_696e83af48346f991db37456513a62f6 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  187 => 15,  164 => 11,  153 => 12,  150 => 11,  137 => 10,  126 => 8,  113 => 7,  90 => 5,  77 => 16,  75 => 15,  71 => 13,  69 => 10,  66 => 9,  64 => 7,  59 => 5,  53 => 1,);
+        return array (  205 => 17,  200 => 16,  187 => 15,  164 => 11,  153 => 12,  150 => 11,  137 => 10,  126 => 8,  113 => 7,  90 => 5,  77 => 19,  75 => 15,  71 => 13,  69 => 10,  66 => 9,  64 => 7,  59 => 5,  53 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -237,7 +246,10 @@ class __TwigTemplate_696e83af48346f991db37456513a62f6 extends Template
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            {{ component('Alert', { message: 'I am a success alert!' }) }}
+            {{ component('Alert', { type: 'danger', message: 'Oh no! The dinos escaped!' }) }}
+        {% endblock %}
     </body>
 </html>
 ", "base.html.twig", "/Users/ilyesdeochandiano/Library/Mobile Documents/com~apple~CloudDocs/ProjetDev/coordination-front-back-symfony-live-component/templates/base.html.twig");
