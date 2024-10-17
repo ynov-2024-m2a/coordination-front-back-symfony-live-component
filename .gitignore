@@ -1,0 +1,21 @@
+###> symfony/framework-bundle ###
+/.env.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> IDE folders ###
+/.vscode
+###< IDE Folders ###
+
+##> exclude .gitkeep dummy files for empty folders ###
+!.gitkeep
+##< exclude .gitkeep dummy files for empty folders ###
+
+###> Twig ###
+.twig-cs-fixer.cache
+##< Twig ###
+
+## Webstorm
+.idea/
