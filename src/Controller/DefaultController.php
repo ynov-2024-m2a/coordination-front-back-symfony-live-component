@@ -8,10 +8,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/', name: 'app_landing')]
+    #[Route('/user', name: 'app_landing')]
     public function index(): Response
     {
         return $this->render('landing/index.html.twig', [
+            'controller_name' => 'UserController',
+
         ]);
     }
 }
