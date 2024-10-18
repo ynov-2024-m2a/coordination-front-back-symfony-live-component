@@ -1,0 +1,64 @@
+<div class="container p-4" {{ attributes.defaults(stimulus_controller('appear')) }}>
+    <div id="results" class="row">
+        {# Last result from previous page #}
+        {% if page > 1 %}
+            <div id="item--{{ page - 1 }}-{{ per_page }}" class="d-block mb-4"></div>
+        {% endif %}
+
+        {# Current page #}
+        {% for item in this.items %}
+            <div
+                id="item--{{ page }}-{{ loop.index }}"
+                class="col-md-4 col-sm-6 mb-4 d-flex align-items-stretch" 
+                data-live-ignore
+                style="--i: {{ item.id }};"
+            >
+                <div class="border rounded p-3 text-center bg-light shadow-sm flex-fill">
+                    <div class="mb-2">
+                        <span class="d-block" style="font-size: 3rem;">{{ item.emoji }}</span>
+                    </div>
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text text-muted">{{ item.description }}</p>
+                    <div class="badge bg-secondary text-light">{{ item.id }}</div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {# Next page #}
+        {% if this.hasMore %}
+            {% for i in 1..per_page %}
+                <div
+                    id="item--{{ page + 1 }}-{{ i }}"
+                    class="col-md-4 col-sm-6 mb-4 d-flex align-items-stretch"
+                    style="--i: {{ (page * per_page) + i - 1 }};"
+                    {% if loop.first %}
+                        data-appear-target="loader"
+                        data-action="appear->live#action"
+                        data-live-action-param="debounce(750)|more"
+                    {% endif %}
+                >
+                    <div class="border rounded p-3 text-center bg-light shadow-sm flex-fill">
+                        <div class="mb-2">
+                            <span class="d-block" style="font-size: 3rem;">🦄</span>
+                            <div class="spinner-border text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <h5 class="card-title">Loading...</h5>
+                        <p class="card-text text-muted">Loading...</p>
+                        <div class="badge bg-secondary text-light">Loading...</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {# No items #}
+    {% if not this.hasMore %}
+        <div class="text-center mt-4">
+            <div class="badge bg-secondary text-light">
+                No more items
+            </div>
+        </div>
+    {% endif %}
+</div>

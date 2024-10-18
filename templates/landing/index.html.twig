@@ -3,9 +3,12 @@
 {% block title %}Landing live component{% endblock %}
 
 {% block body %}
-    <p>Baptiste le tdc</p>
     <twig:Card
-            name="{{ 'test' }}"
-            description="{{ 'desc' }}"
+        name="{{ 'test' }}"
+        description="{{ 'desc' }}"
     />
+
+    <div class="container w-50 mb-5">
+        <twig:AnimalGrid />
+    </div>
 {% endblock %}
