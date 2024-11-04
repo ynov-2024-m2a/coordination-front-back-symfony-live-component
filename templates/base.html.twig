@@ -13,6 +13,18 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <twig:Header
+            siteTitle="{{ 'Symfony UX Demo' }}"
+            navigationLinks="{{ {
+                'Accueil': '/',
+                'Components': '/components',
+                'Live Components': '/live-components',
+                'UX Turbo': '/turbo',
+                'Notifications': '/notifications',
+            } }}"
+        />
+        <main class="container my-5">
+            {% block body %}{% endblock %}
+        </main>
     </body>
 </html>

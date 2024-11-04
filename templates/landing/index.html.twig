@@ -1,14 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Landing live component{% endblock %}
+{% block title %}Landing page{% endblock %}
 
 {% block body %}
-    <twig:Card
-        name="{{ 'test' }}"
-        description="{{ 'desc' }}"
-    />
+<div class="container my-5">
+    <!-- Section: Présentation des Twig Components -->
+    <section class="mb-5 text-center">
+        <h2 class="display-3 fw-bold mb-4 text-primary">Twig Component</h2>
+        <p class="lead text-secondary">Explorez les composants Twig pour une intégration rapide et efficace d'éléments UI réutilisables.</p>
+        <hr class="my-4">
+        <div class="d-flex justify-content-center">
+            <twig:Card
+                name="Composant d'exemple"
+                description="Un exemple de composant Twig pour illustrer la modularité des composants."
+                class="card shadow-sm p-3 mb-5 bg-body rounded"
+            />
+        </div>
+    </section>
+    <!-- Section: Présentation des Live Components -->
+    <section class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-success">Interactive Live Components</h2>
+        <p class="lead text-secondary">Découvrez les composants dynamiques de Symfony UX pour des interactions en temps réel, sans rechargement de page.</p>
+        <hr class="my-4">
+        <div class="container w-75 mb-5">
+            <twig:AnimalGrid class="shadow-lg p-3 bg-light rounded" />
+        </div>
+    </section>
 
-    <div class="container w-50 mb-5">
-        <twig:AnimalGrid />
-    </div>
+</div>
 {% endblock %}
