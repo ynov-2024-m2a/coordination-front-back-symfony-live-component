@@ -4,6 +4,7 @@
 /public/assets/
 /var/
 /vendor/
+/assets/vendor/
 ###< symfony/framework-bundle ###
 
 ###> IDE folders ###

@@ -17,6 +17,7 @@
   }
 
 }
+
 .DocsLink_content {
   display: flex;
   flex-direction: column;
@@ -48,6 +49,7 @@
   opacity: .5;
   margin-inline-start: auto;
   transition: opacity 600ms ease-in-out;
+
   .DocsLink:hover & {
     transition: opacity 250ms ease-in-out;
     opacity: 1;
