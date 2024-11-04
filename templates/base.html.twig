@@ -4,10 +4,11 @@
         <meta charset="UTF-8">
         <title>{% block title %}Landing page demo{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.scss') }}">
         {% endblock %}
-
+        
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
@@ -16,15 +17,56 @@
         <twig:Header
             siteTitle="{{ 'Symfony UX Demo' }}"
             navigationLinks="{{ {
-                'Accueil': '/',
-                'Components': '/components',
-                'Live Components': '/live-components',
-                'UX Turbo': '/turbo',
-                'Notifications': '/notifications',
+                'Twig component': '#twig-component',
+                'Live component': '#live-component',
+                'UX Turbo': '#ux-turbo',
+                'Notifications': '#notifications',
             } }}"
         />
         <main class="container my-5">
             {% block body %}{% endblock %}
         </main>
+       <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const navbarLinks = document.querySelectorAll('a[href^="#"]'); // Sélectionner tous les liens d'ancrage
+
+                // Ajouter un écouteur d'événements à chaque lien
+                navbarLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault(); // Empêcher le comportement par défaut du lien
+
+                        // Récupérer l'ID de la cible en enlevant le '#'
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetElement = document.getElementById(targetId);
+
+                        // Si l'élément cible existe, faire défiler la page
+                        if (targetElement) {
+                            // Calculer la position de défilement en tenant compte de la hauteur du header
+                            const headerOffset = document.querySelector('.navbar').offsetHeight; // Hauteur du header
+                            const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY; // Position de l'élément
+                            const offsetPosition = elementPosition - headerOffset; // Ajuster la position
+
+                            // Utiliser window.scrollTo pour un défilement fluide
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth', // Défilement fluide
+                            });
+                        }
+                    });
+                });
+
+                // Script pour changer le style du header lors du défilement
+                const navbar = document.querySelector('.navbar');
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 50) {
+                        navbar.classList.remove('opaque');
+                        navbar.classList.add('transparent');
+                    } else {
+                        navbar.classList.remove('transparent');
+                        navbar.classList.add('opaque');
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

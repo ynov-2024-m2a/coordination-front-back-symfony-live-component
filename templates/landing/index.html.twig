@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Landing page{% endblock %}
+{% block title %}Landing Page{% endblock %}
 
 {% block body %}
 <div class="container my-5">
     <!-- Section: Présentation des Twig Components -->
-    <section class="mb-5 text-center">
+    <section id="twig-component" class="mb-5 text-center">
         <h2 class="display-3 fw-bold mb-4 text-primary">Twig Component</h2>
         <p class="lead text-secondary">Explorez les composants Twig pour une intégration rapide et efficace d'éléments UI réutilisables.</p>
         <hr class="my-4">
@@ -18,7 +18,7 @@
         </div>
     </section>
     <!-- Section: Présentation des Live Components -->
-    <section class="text-center">
+    <section id="live-component" class="text-center">
         <h2 class="display-3 fw-bold mb-4 text-success">Interactive Live Components</h2>
         <p class="lead text-secondary">Découvrez les composants dynamiques de Symfony UX pour des interactions en temps réel, sans rechargement de page.</p>
         <hr class="my-4">
@@ -26,6 +26,5 @@
             <twig:AnimalGrid class="shadow-lg p-3 bg-light rounded" />
         </div>
     </section>
-
 </div>
 {% endblock %}
