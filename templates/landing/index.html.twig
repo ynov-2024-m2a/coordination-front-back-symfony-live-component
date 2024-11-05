@@ -23,16 +23,16 @@
         <p class="lead text-secondary">Découvrez l'autocomplétion en temps réel pour une saisie plus rapide et précise.</p>
         <hr class="my-4">
         <div class="container w-50">
-            {% for message in app.flashes('autocomplete_success') %}
-                <div class="alert alert-success" data-turbo-cache="false">{{ message }}</div>
-            {% endfor %}
-            {{ form_start(form) }}
-                {{ form_row(form.animals) }}
-
-                {{ form_row(form.name) }}
-
-                <button type="submit" class="btn btn-primary">Let's Nom!</button>
-            {{ form_end(form) }}
+            <turbo-frame id="autocomplete-demo-form">
+                {% for message in app.flashes('autocomplete_success') %}
+                    <div class="alert alert-success" data-turbo-cache="false">{{ message }}</div>
+                {% endfor %}
+                {{ form_start(form) }}
+                    {{ form_row(form.animals) }}
+                    {{ form_row(form.name) }}
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                {{ form_end(form) }}
+            </turbo-frame>
         </div>
     </section>
     <!-- Section: Présentation de Live Component -->
