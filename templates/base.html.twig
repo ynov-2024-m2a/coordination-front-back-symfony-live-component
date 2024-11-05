@@ -26,6 +26,14 @@
         <main class="container my-5">
             {% block body %}{% endblock %}
         </main>
+
+        <div class="">
+
+            <twig:Footer
+                navigationLinks="{{ {
+                } }}"
+                />
+        </div>
        <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const navbarLinks = document.querySelectorAll('a[href^="#"]'); // Sélectionner tous les liens d'ancrage
