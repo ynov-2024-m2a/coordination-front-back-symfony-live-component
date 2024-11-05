@@ -17,11 +17,11 @@ class AnimalAutocompleteField extends AbstractType
         $resolver->setDefaults([
             'class' => Animal::class,
             'searchable_fields' => ['name'],
-            'label' => 'What animals do you want to eat?',
+            'label' => 'Quels animaux aimeriez-vous avoir ?',
             'choice_label' => 'name',
             'multiple' => true,
             'constraints' => [
-                new Count(min: 1, minMessage: 'We need to eat *something*'),
+                new Count(min: 1, minMessage: 'Selectionnez au moins un animal.'),
             ],
         ]);
     }
