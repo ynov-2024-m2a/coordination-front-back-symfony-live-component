@@ -5,7 +5,6 @@
 @import "../../vendor/twbs/bootstrap/scss/bootstrap";
 @import './components/_DocsLink.scss';
 @import './components/_ThemeSwitcher.scss';
-@import "~@fortawesome/fontawesome-free/css/all.min.css";
 
 .navbar {
     transition: background-color 0.3s, backdrop-filter 0.3s !important;
