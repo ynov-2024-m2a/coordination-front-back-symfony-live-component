@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="light">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Landing page demo{% endblock %}</title>
@@ -10,7 +10,9 @@
         {% endblock %}
         
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% block importmap %}
+                {{ importmap('app') }}
+            {% endblock %}
         {% endblock %}
     </head>
     <body>
@@ -21,7 +23,7 @@
                     'Twig component': '#twig-component',
                     'Autocomplete input': '#autocomplete-input',
                     'Live component': '#live-component',
-                    'UX Turbo': '#ux-turbo',
+                    'Vue component': '#vue-component',
                     'Notifications': '#notifications',
                 } }}"
             />

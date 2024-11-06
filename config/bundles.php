@@ -18,4 +18,5 @@ return [
     Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
     Symfonycasts\SassBundle\SymfonycastsSassBundle::class => ['all' => true],
     Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
+    Symfony\UX\Vue\VueBundle::class => ['all' => true],
 ];

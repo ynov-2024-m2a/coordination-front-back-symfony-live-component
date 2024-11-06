@@ -1,6 +1,15 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
+    connect() {
+        const savedTheme = localStorage.getItem('user-theme');
+        if (savedTheme) {
+            this.select(savedTheme);
+        } else {
+            const defaultTheme = document.documentElement.getAttribute('data-bs-theme') || 'light';
+            this.select(defaultTheme);
+        }
+    }
     switch() {
         let currentTheme = localStorage.getItem('user-theme');
         if (!currentTheme) {

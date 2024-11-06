@@ -2,6 +2,10 @@
 
 {% block title %}Landing Page{% endblock %}
 
+{% block importmap %}
+    {{ importmap('app-vue') }}
+{% endblock %}
+
 {% block body %}
 <div class="container my-5">
     <!-- Section: Présentation de Twig Component -->
@@ -46,6 +50,19 @@
         <div class="container w-75 mb-5">
             <twig:AnimalGrid class="shadow-lg p-3 bg-light rounded" />
         </div>
+    </section>
+    <!-- Section: Présentation de Vue Component -->
+    <section id="vue-component" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-danger">Vue Component</h2>
+        <p class="lead text-secondary">Explorez les composants Vue.js pour des interactions complexes et dynamiques.</p>
+        <hr class="my-4">
+        <div class="container w-50" {{ vue_component('UserCard', {
+            'name': 'Alex Martin',
+            'age': 25,
+            'title': 'Développeur Web',
+            'image': 'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
+            'description': 'Passionné par les nouvelles technologies et le développement web.'
+        }) }}></div>
     </section>
 </div>
 {% endblock %}
