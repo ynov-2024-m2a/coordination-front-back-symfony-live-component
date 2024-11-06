@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use App\Chart\ChartManager;
 use App\Form\AnimalForm;
 use App\Message\MessageManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'app_landing', methods: ['GET', 'POST'])]
-    public function index(Request $request, MessageManager $messageManager): Response
+    public function index(Request $request, MessageManager $messageManager, ChartManager $chartManager): Response
     {
         $form = $this->createForm(AnimalForm::class);
         $form->handleRequest($request);
@@ -32,6 +33,14 @@ class DefaultController extends AbstractController
 
         return $this->render('landing/index.html.twig', [
             'form' => $form,
+            'lineChart' => $chartManager->createLineChart(),
+            'barChart' => $chartManager->createBarChart(),
+            'scatterChart' => $chartManager->createScatterChart(),
+            'radarChart' => $chartManager->createRadarChart(),
+            'pieChart' => $chartManager->createPieChart(),
+            'doughnutChart' => $chartManager->createDoughnutChart(),
+            'polarAreaChart' => $chartManager->createPolarAreaChart(),
+            'bubbleChart' => $chartManager->createBubbleChart(),
         ]);
     }
 }

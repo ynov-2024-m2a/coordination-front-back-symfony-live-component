@@ -64,4 +64,7 @@ return [
     '@vue/reactivity' => [
         'version' => '3.5.12',
     ],
+    'chart.js' => [
+        'version' => '3.9.1',
+    ],
 ];

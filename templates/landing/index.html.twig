@@ -64,5 +64,50 @@
             'description': 'Passionné par les nouvelles technologies et le développement web.'
         }) }}></div>
     </section>
+    <!-- Section: Présentation de Chart JS -->
+    <section id="chart-js" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-info">Chart.js</h2>
+        <p class="lead text-secondary">Découvrez les graphiques interactifs pour une visualisation claire et précise des données.</p>
+        <hr class="my-4">
+        <h3>Graphique linéaire</h3>
+        <div class="container w-100">
+            {{ render_chart(lineChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Graphique en barres</h3>
+        <div class="container w-100">
+            {{ render_chart(barChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Graphique en dispersion</h3>
+        <div class="container w-100">
+            {{ render_chart(scatterChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Graphique en radar</h3>
+        <div class="container w-100">
+            {{ render_chart(radarChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Diagramme de camembert</h3>
+        <div class="container w-100">
+            {{ render_chart(pieChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Diagramme en anneau</h3>
+        <div class="container w-100">
+            {{ render_chart(doughnutChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Diagramme en zone polaire</h3>
+        <div class="container w-100">
+            {{ render_chart(polarAreaChart) }}
+        </div>
+        <hr class="my-4 border-primary">
+        <h3>Graphique en bulles</h3>
+        <div>
+            {{ render_chart(bubbleChart) }}
+        </div>
+    </section>
 </div>
 {% endblock %}
