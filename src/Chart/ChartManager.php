@@ -7,364 +7,217 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartManager
 {
+    private const DATA_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    private const LABEL_PRODUCT_A = 'Produit A';
+    private const COLOR_PRODUCT_A = 'rgba(255, 99, 132, 0.2)';
+    private const BG_PRODUCT_A = 'rgba(255, 99, 132, 1)';
+    private const DATA_PRODUCT_A = [120, 150, 180, 220, 300, 250, 280, 350, 330, 400, 420, 500];
+
+    private const LABEL_PRODUCT_B = 'Produit B';
+    private const COLOR_PRODUCT_B = 'rgba(54, 162, 235, 0.2)';
+    private const BG_PRODUCT_B = 'rgba(54, 162, 235, 1)';
+    private const DATA_PRODUCT_B = [100, 140, 160, 200, 260, 240, 270, 320, 310, 360, 380, 450];
+
+    private const LABEL_PRODUCT_C = 'Produit C';
+    private const COLOR_PRODUC_C = 'rgba(75, 192, 192, 0.2)';
+    private const BG_PRODUCT_C = 'rgba(75, 192, 192, 1)';
+    private const DATA_PRODUCT_C = [90, 110, 130, 170, 230, 210, 230, 290, 270, 330, 350, 400];
+
+    private const DATA_BUBBLE = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
+
+    private const CHART_TYPES = [
+        'lineChart' => Chart::TYPE_LINE,
+        'barChart' => Chart::TYPE_BAR,
+        'scatterChart' => Chart::TYPE_SCATTER,
+        'radarChart' => Chart::TYPE_RADAR,
+        'pieChart' => Chart::TYPE_PIE,
+        'doughnutChart' => Chart::TYPE_DOUGHNUT,
+        'polarAreaChart' => Chart::TYPE_POLAR_AREA,
+        'bubbleChart' => Chart::TYPE_BUBBLE,
+    ];
+
     public function __construct(private ChartBuilderInterface $builder)
     {
     }
 
-    public function createLineChart(): Chart
+    /**
+     * @return Chart[]
+     */
+    public function createAllCharts(): array
     {
-        $chart = $this->builder->createChart(Chart::TYPE_LINE);
-        
-        $chart->setData([
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            'datasets' => [
-                [
-                    'label' => 'Produit A',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'data' => [120, 150, 180, 220, 300, 250, 280, 350, 330, 400, 420, 500],
-                ],
-                [
-                    'label' => 'Produit B',
-                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'borderColor' => 'rgba(54, 162, 235, 1)',
-                    'data' => [100, 140, 160, 200, 260, 240, 270, 320, 310, 360, 380, 450],
-                ],
-                [
-                    'label' => 'Produit C',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
-                    'borderColor' => 'rgba(75, 192, 192, 1)',
-                    'data' => [90, 110, 130, 170, 230, 210, 230, 290, 270, 330, 350, 400],
-                ]
-            ]
-        ]);
+        $charts = [];
 
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
+        foreach (self::CHART_TYPES as $key => $type) {
+            $charts[$key] = $this->createChart($type);
+        }
+
+        return $charts;
+    }
+
+    public function createChart(string $type): Chart
+    {
+        $chart = $this->builder->createChart($type);
+        $chart->setData($this->getCommonData($type));
+        $chart->setOptions($this->getDefaultOptions());
 
         return $chart;
     }
 
-    public function createBarChart(): Chart
+    /**
+     * @return array<string, mixed>
+     */
+    private function getCommonData(string $type): array
     {
-        $chart = $this->builder->createChart(Chart::TYPE_BAR);
-        
-        $chart->setData([
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            'datasets' => [
-                [
-                    'label' => 'Produit A',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'data' => [120, 150, 180, 220, 300, 250, 280, 350, 330, 400, 420, 500],
-                ],
-                [
-                    'label' => 'Produit B',
-                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'borderColor' => 'rgba(54, 162, 235, 1)',
-                    'data' => [100, 140, 160, 200, 260, 240, 270, 320, 310, 360, 380, 450],
-                ],
-                [
-                    'label' => 'Produit C',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
-                    'borderColor' => 'rgba(75, 192, 192, 1)',
-                    'data' => [90, 110, 130, 170, 230, 210, 230, 290, 270, 330, 350, 400],
-                ]
-            ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-
-        return $chart;
+        if ($type === Chart::TYPE_BUBBLE) {
+            return $this->getBubbleData();
+        } elseif (in_array($type, [Chart::TYPE_SCATTER])) {
+            return $this->getScatterData();
+        } elseif (in_array($type, [Chart::TYPE_PIE, Chart::TYPE_DOUGHNUT, Chart::TYPE_POLAR_AREA])) {
+            return $this->getPieDoughnutPolarData();
+        } else {
+            return $this->getStandardData();
+        }
     }
 
-    public function createScatterChart(): Chart
+    /**
+     * @return array<string, mixed>
+     */
+    private function getBubbleData(): array
     {
-        $chart = $this->builder->createChart(Chart::TYPE_SCATTER);
-        
-        $chart->setData([
+        return [
             'datasets' => [
                 [
-                    'label' => 'Produit A',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'data' => [
-                        ['x' => 1, 'y' => 120],
-                        ['x' => 2, 'y' => 150],
-                        ['x' => 3, 'y' => 180],
-                        ['x' => 4, 'y' => 220],
-                        ['x' => 5, 'y' => 300],
-                        ['x' => 6, 'y' => 250],
-                        ['x' => 7, 'y' => 280],
-                        ['x' => 8, 'y' => 350],
-                        ['x' => 9, 'y' => 330],
-                        ['x' => 10, 'y' => 400],
-                        ['x' => 11, 'y' => 420],
-                        ['x' => 12, 'y' => 500],
-                    ],
+                    'label' => self::LABEL_PRODUCT_A,
+                    'backgroundColor' => self::COLOR_PRODUCT_A,
+                    'borderColor' => self::BG_PRODUCT_A,
+                    'data' => array_map(
+                        fn($y, $x, $r) => ['x' => $x, 'y' => $y, 'r' => $r],
+                        self::DATA_PRODUCT_A, range(1, 12), self::DATA_BUBBLE
+                    ),
                 ],
                 [
-                    'label' => 'Produit B',
-                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'borderColor' => 'rgba(54, 162, 235, 1)',
-                    'data' => [
-                        ['x' => 1, 'y' => 100],
-                        ['x' => 2, 'y' => 140],
-                        ['x' => 3, 'y' => 160],
-                        ['x' => 4, 'y' => 200],
-                        ['x' => 5, 'y' => 260],
-                        ['x' => 6, 'y' => 240],
-                        ['x' => 7, 'y' => 270],
-                        ['x' => 8, 'y' => 320],
-                        ['x' => 9, 'y' => 310],
-                        ['x' => 10, 'y' => 360],
-                        ['x'=> 11, 'y' => 380],
-                        ['x' => 12, 'y' => 450],
-                    ],
+                    'label' => self::LABEL_PRODUCT_B,
+                    'backgroundColor' => self::COLOR_PRODUCT_B,
+                    'borderColor' => self::BG_PRODUCT_B,
+                    'data' => array_map(
+                        fn($y, $x, $r) => ['x' => $x, 'y' => $y, 'r' => $r],
+                        self::DATA_PRODUCT_B, range(1, 12), self::DATA_BUBBLE
+                    ),
                 ],
                 [
-                    'label' => 'Produit C',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
-                    'borderColor' => 'rgba(75, 192, 192, 1)',
+                    'label' => self::LABEL_PRODUCT_C,
+                    'backgroundColor' => self::COLOR_PRODUC_C,
+                    'borderColor' => self::BG_PRODUCT_C,
+                    'data' => array_map(
+                        fn($y, $x, $r) => ['x' => $x, 'y' => $y, 'r' => $r],
+                        self::DATA_PRODUCT_C, range(1, 12), self::DATA_BUBBLE
+                    ),
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getScatterData(): array
+    {
+        return [
+            'datasets' => [
+                [
+                    'label' => self::LABEL_PRODUCT_A,
+                    'backgroundColor' => self::COLOR_PRODUCT_A,
+                    'borderColor' => self::BG_PRODUCT_A,
+                    'data' => array_map(fn($y, $x) => ['x' => $x, 'y' => $y], self::DATA_PRODUCT_A, range(1, 12))
+                ],
+                [
+                    'label' => self::LABEL_PRODUCT_B,
+                    'backgroundColor' => self::COLOR_PRODUCT_B,
+                    'borderColor' => self::BG_PRODUCT_B,
+                    'data' => array_map(fn($y, $x) => ['x' => $x, 'y' => $y], self::DATA_PRODUCT_B, range(1, 12))
+                ],
+                [
+                    'label' => self::LABEL_PRODUCT_C,
+                    'backgroundColor' => self::COLOR_PRODUC_C,
+                    'borderColor' => self::BG_PRODUCT_C,
+                    'data' => array_map(fn($y, $x) => ['x' => $x, 'y' => $y], self::DATA_PRODUCT_C, range(1, 12))
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPieDoughnutPolarData(): array
+    {
+        return [
+            'labels' => [self::LABEL_PRODUCT_A, self::LABEL_PRODUCT_B, self::LABEL_PRODUCT_C],
+            'datasets' => [
+                [
+                    'backgroundColor' => [
+                        self::COLOR_PRODUCT_A,
+                        self::COLOR_PRODUCT_B,
+                        self::COLOR_PRODUC_C
+                    ],
+                    'borderColor' => [
+                        self::BG_PRODUCT_A,
+                        self::BG_PRODUCT_B, 
+                        self::BG_PRODUCT_C
+                    ],
                     'data' => [
-                        ['x' => 1, 'y' => 90],
-                        ['x' => 2, 'y' => 110],
-                        ['x' => 3, 'y' => 130],
-                        ['x' => 4, 'y' => 170],
-                        ['x' => 5, 'y' => 230],
-                        ['x' => 6, 'y' => 210],
-                        ['x' => 7, 'y' => 230],
-                        ['x' => 8, 'y' => 290],
-                        ['x' => 9, 'y' => 270],
-                        ['x' => 10, 'y' => 330],
-                        ['x' => 11, 'y' => 350],
-                        ['x' => 12, 'y' => 400],
+                        array_sum(self::DATA_PRODUCT_A),
+                        array_sum(self::DATA_PRODUCT_B),
+                        array_sum(self::DATA_PRODUCT_C)
                     ],
                 ]
             ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-
-        return $chart;
+        ];
     }
 
-    public function createRadarChart(): Chart
+    /**
+     * @return array<string, mixed>
+     */
+    private function getStandardData(): array
     {
-        $chart = $this->builder->createChart(Chart::TYPE_RADAR);
-        
-        $chart->setData([
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        return [
+            'labels' => self::DATA_LABELS,
             'datasets' => [
                 [
-                    'label' => 'Produit A',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'data' => [120, 150, 180, 220, 300, 250, 280, 350, 330, 400, 420, 500],
+                    'label' => self::LABEL_PRODUCT_A,
+                    'backgroundColor' => self::COLOR_PRODUCT_A,
+                    'borderColor' => self::BG_PRODUCT_A,
+                    'data' => self::DATA_PRODUCT_A,
                 ],
                 [
-                    'label' => 'Produit B',
-                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'borderColor' => 'rgba(54, 162, 235, 1)',
-                    'data' => [100, 140, 160, 200, 260, 240, 270, 320, 310, 360, 380, 450],
+                    'label' => self::LABEL_PRODUCT_B,
+                    'backgroundColor' => self::COLOR_PRODUCT_B,
+                    'borderColor' => self::BG_PRODUCT_B,
+                    'data' => self::DATA_PRODUCT_B,
                 ],
                 [
-                    'label' => 'Produit C',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
-                    'borderColor' => 'rgba(75, 192, 192, 1)',
-                    'data' => [90, 110, 130, 170, 230, 210, 230, 290, 270, 330, 350, 400],
+                    'label' => self::LABEL_PRODUCT_C,
+                    'backgroundColor' => self::COLOR_PRODUC_C,
+                    'borderColor' => self::BG_PRODUCT_C,
+                    'data' => self::DATA_PRODUCT_C,
                 ]
             ]
-        ]);
+        ];
+    }
 
-        $chart->setOptions([
+    /**
+     * @return array<string, mixed>
+     */
+    private function getDefaultOptions(): array
+    {
+        return [
             'maintainAspectRatio' => false,
             'scales' => [
                 'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-
-        return $chart;
-    }
-
-    public function createPieChart(): Chart
-    {
-        $chart = $this->builder->createChart(Chart::TYPE_PIE);
-
-        $chart->setData([
-            'labels' => ['Produit A', 'Produit B', 'Produit C'],
-            'datasets' => [
-                [
-                    'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-                    'borderColor' => ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
-                    'data' => [500, 450, 400],
-                ]
-            ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-
-        return $chart;
-    }
-
-    public function createDoughnutChart(): Chart
-    {
-        $chart = $this->builder->createChart(Chart::TYPE_DOUGHNUT);
-
-        $chart->setData([
-            'labels' => ['Produit A', 'Produit B', 'Produit C'],
-            'datasets' => [
-                [
-                    'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-                    'borderColor' => ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
-                    'data' => [500, 450, 400],
-                ]
-            ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-        
-        return $chart;
-    }
-
-    public function createPolarAreaChart(): Chart
-    {
-        $chart = $this->builder->createChart(Chart::TYPE_POLAR_AREA);
-
-        $chart->setData([
-            'labels' => ['Produit A', 'Produit B', 'Produit C'],
-            'datasets' => [
-                [
-                    'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-                    'borderColor' => ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
-                    'data' => [500, 450, 400],
-                ]
-            ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-            
-        return $chart;
-    }
-
-    public function createBubbleChart(): Chart
-    {
-        $chart = $this->builder->createChart(Chart::TYPE_BUBBLE);
-
-        $chart->setData([
-            'datasets' => [
-                [
-                    'label' => 'Produit A',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'data' => [
-                        ['x' => 1, 'y' => 120, 'r' => 10],
-                        ['x' => 2, 'y' => 150, 'r' => 20],
-                        ['x' => 3, 'y' => 180, 'r' => 30],
-                        ['x' => 4, 'y' => 220, 'r' => 40],
-                        ['x' => 5, 'y' => 300, 'r' => 50],
-                        ['x' => 6, 'y' => 250, 'r' => 60],
-                        ['x' => 7, 'y' => 280, 'r' => 70],
-                        ['x' => 8, 'y' => 350, 'r' => 80],
-                        ['x' => 9, 'y' => 330, 'r' => 90],
-                        ['x' => 10, 'y' => 400, 'r' => 100],
-                        ['x' => 11, 'y' => 420, 'r' => 110],
-                        ['x' => 12, 'y' => 500, 'r' => 120],
-                    ],
+                    'beginAtZero' => true,
                 ],
-                [
-                    'label' => 'Produit B',
-                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'borderColor' => 'rgba(54, 162, 235, 1)',
-                    'data' => [
-                        ['x' => 1, 'y' => 100, 'r' => 10],
-                        ['x' => 2, 'y' => 140, 'r' => 20],
-                        ['x' => 3, 'y' => 160, 'r' => 30],
-                        ['x' => 4, 'y' => 200, 'r' => 40],
-                        ['x' => 5, 'y' => 260, 'r' => 50],
-                        ['x' => 6, 'y' => 240, 'r' => 60],
-                        ['x' => 7, 'y' => 270, 'r' => 70],
-                        ['x' => 8, 'y' => 320, 'r' => 80],
-                        ['x' => 9, 'y' => 310, 'r' => 90],
-                        ['x' => 10, 'y' => 360, 'r' => 100],
-                        ['x' => 11, 'y' => 380, 'r' => 110],
-                        ['x' => 12, 'y' => 450, 'r' => 120],
-                    ],
-                ],
-                [
-                    'label' => 'Produit C',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
-                    'borderColor' => 'rgba(75, 192, 192, 1)',
-                    'data' => [
-                        ['x' => 1, 'y' => 90, 'r' => 10],
-                        ['x' => 2, 'y' => 110, 'r' => 20],
-                        ['x' => 3, 'y' => 130, 'r' => 30],
-                        ['x' => 4, 'y' => 170, 'r' => 40],
-                        ['x' => 5, 'y' => 230, 'r' => 50],
-                        ['x' => 6, 'y' => 210, 'r' => 60],
-                        ['x' => 7, 'y' => 230, 'r' => 70],
-                        ['x' => 8, 'y' => 290, 'r' => 80],
-                        ['x' => 9, 'y' => 270, 'r' => 90],
-                        ['x' => 10, 'y' => 330, 'r' => 100],
-                        ['x' => 11, 'y' => 350, 'r' => 110],
-                        ['x' => 12, 'y' => 400, 'r' => 120],
-                    ],
-                ]
-            ]
-        ]);
-
-        $chart->setOptions([
-            'maintainAspectRatio' => false,
-            'scales' => [
-                'y' => [
-                    'beginAtZero' => true
-                ]
-            ]
-        ]);
-
-        return $chart;
-    }       
+            ],
+        ];
+    }
 }

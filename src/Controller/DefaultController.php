@@ -33,14 +33,7 @@ class DefaultController extends AbstractController
 
         return $this->render('landing/index.html.twig', [
             'form' => $form,
-            'lineChart' => $chartManager->createLineChart(),
-            'barChart' => $chartManager->createBarChart(),
-            'scatterChart' => $chartManager->createScatterChart(),
-            'radarChart' => $chartManager->createRadarChart(),
-            'pieChart' => $chartManager->createPieChart(),
-            'doughnutChart' => $chartManager->createDoughnutChart(),
-            'polarAreaChart' => $chartManager->createPolarAreaChart(),
-            'bubbleChart' => $chartManager->createBubbleChart(),
+            'charts' => $chartManager->createAllCharts()
         ]);
     }
 }
