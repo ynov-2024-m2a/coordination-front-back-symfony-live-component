@@ -90,5 +90,15 @@
         {% endfor %}
         <hr class="my-4 border-primary">
     </section>
+    <!-- Section: Présentation de UX Map -->
+    <section id="ux-map" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-secondary">Symfony UX Map</h2>
+        <p class="lead text-secondary">Utilisez Symfony UX Map pour une gestion simplifiée.</p>
+        <hr class="my-4">
+        <div>
+            {# The map must have a defined height #}
+            {{ ux_map(map, {style: 'height: 600px;'}) }}
+        </div>
+    </section>
 </div>
 {% endblock %}

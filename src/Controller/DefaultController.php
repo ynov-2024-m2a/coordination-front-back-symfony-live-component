@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Chart\ChartManager;
 use App\Form\AnimalForm;
+use App\Map\MapManager;
 use App\Message\MessageManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'app_landing', methods: ['GET', 'POST'])]
-    public function index(Request $request, MessageManager $messageManager, ChartManager $chartManager): Response
+    public function index(Request $request, MessageManager $messageManager, ChartManager $chartManager, MapManager $mapManager): Response
     {
         $form = $this->createForm(AnimalForm::class);
         $form->handleRequest($request);
@@ -33,7 +34,8 @@ class DefaultController extends AbstractController
 
         return $this->render('landing/index.html.twig', [
             'form' => $form,
-            'charts' => $chartManager->createAllCharts()
+            'charts' => $chartManager->createAllCharts(),
+            'map' => $mapManager->createMap(),
         ]);
     }
 }
