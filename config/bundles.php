@@ -21,4 +21,5 @@ return [
     Symfony\UX\Vue\VueBundle::class => ['all' => true],
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
     Symfony\UX\Map\UXMapBundle::class => ['all' => true],
+    Symfony\UX\Typed\TypedBundle::class => ['all' => true],
 ];

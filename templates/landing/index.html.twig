@@ -8,6 +8,28 @@
 
 {% block body %}
 <div class="container my-5">
+    <!-- Section: Typed.js -->
+    <h1 class="display-2 text-center py-5 fw-bold">
+        Découvrez
+        <span {{ stimulus_controller('symfony/ux-typed', {
+            strings: [
+                'Typed.js',
+                'Twig Component',
+                'Autocomplete Input',
+                'Live Component',
+                'Vue Component',
+                'Chart.js',
+                'Symfony UX Map'
+            ],
+            smartBackspace: true,
+            showCursor: true,
+            cursorChar: '|',
+            typeSpeed: 50,
+            backSpeed: 20,
+            backDelay: 2000,
+            loop: true
+        }) }}></span>
+    </h1>
     <!-- Section: Présentation de Twig Component -->
     <section id="twig-component" class="mb-5 text-center">
         <h2 class="display-3 fw-bold mb-4 text-primary">Twig Component</h2>

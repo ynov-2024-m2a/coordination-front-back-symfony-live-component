@@ -323,6 +323,9 @@
             "config/packages/twig_component.yaml"
         ]
     },
+    "symfony/ux-typed": {
+        "version": "v2.21.0"
+    },
     "symfony/ux-vue": {
         "version": "2.21",
         "recipe": {
