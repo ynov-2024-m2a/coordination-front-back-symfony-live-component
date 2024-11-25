@@ -17,17 +17,19 @@
 
 ## Lancer le projet
 
-1. Lancer les containers Docker avec la commande `docker-compose up -d`
+1. Lancer les containers Docker avec la commande `docker-compose up -d --build`
 
-2. Créer la base de données avec la commande `php bin/console doctrine:create:database`
+2. Créer la base de données avec la commande `php bin/console doctrine:database:create`
 
 2. Jouer la migration avec commande `php bin/console doctrine:migrations:migrate`
 
-3. Installer les fixtures avec la commande `php bin/console doctrine:fixtures:load`
+3. Installer les fixtures avec la commande `php bin/console app:load-data`
 
-4. Lancer le serveur de développement local avec la commande `symfony serve`
+4. Lancer la commande de build du style `php bin/console sass:build`
 
-5. Ouvrir le navigateur à l'adresse `http://localhost:8000`
+6. Lancer le serveur de développement local avec la commande `symfony serve`
+
+7. Ouvrir le navigateur à l'adresse `http://localhost:8000`
 
 ## Structure du projet
 ### Frontend
