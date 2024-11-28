@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Landing Page{% endblock %}
+
+{% block importmap %}
+    {{ importmap('app-vue') }}
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <!-- Section: Typed.js -->
+    <h1 class="display-2 text-center py-5 fw-bold">
+        Découvrez
+        <span {{ stimulus_controller('symfony/ux-typed', {
+            strings: [
+                'Typed.js',
+                'Twig Component',
+                'Autocomplete Input',
+                'Live Component',
+                'Vue Component',
+                'Chart.js',
+                'Symfony UX Map'
+            ],
+            smartBackspace: true,
+            showCursor: true,
+            cursorChar: '|',
+            typeSpeed: 50,
+            backSpeed: 20,
+            backDelay: 2000,
+            loop: true
+        }) }}></span>
+    </h1>
+    <!-- Section: Présentation de Twig Component -->
+    <section id="twig-component" class="mb-5 text-center">
+        <h2 class="display-3 fw-bold mb-4 text-primary">Twig Component</h2>
+        <p class="lead text-secondary">Explorez les composants Twig pour une intégration rapide et efficace d'éléments UI réutilisables.</p>
+        <hr class="my-4">
+        <div class="d-flex justify-content-center">
+            <twig:DocsLink
+                title="Community"
+                text="Feedback · ideas · contributions."
+                url="{{ "https://symfony.com/doc/current/ux.html" }}"
+            />
+        </div>
+    </section>
+    <!-- Section: Présentation de l'input autocomplété -->
+    <section id="autocomplete-input" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-warning">Autocomplete Input</h2>
+        <p class="lead text-secondary">Découvrez l'autocomplétion en temps réel pour une saisie plus rapide et précise.</p>
+        <hr class="my-4">
+        <div class="container w-50">
+            <turbo-frame id="autocomplete-demo-form">
+                {% for message in app.flashes('autocomplete_success') %}
+                    <div class="alert alert-success" data-turbo-cache="false">{{ message }}</div>
+                {% endfor %}
+                {{ form_start(form) }}
+                    {{ form_row(form.animals) }}
+                    {{ form_row(form.name) }}
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                {{ form_end(form) }}
+            </turbo-frame>
+        </div>
+    </section>
+    <!-- Section: Présentation de Live Component -->
+    <section id="live-component" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-success">Interactive Live Components</h2>
+        <p class="lead text-secondary">Découvrez les composants dynamiques de Symfony UX pour des interactions en temps réel, sans rechargement de page.</p>
+        <hr class="my-4">
+        <div>
+            <twig:NewProductForm />
+        </div>
+        <div class="container w-75 mb-5">
+            <twig:AnimalGrid class="shadow-lg p-3 bg-light rounded" />
+        </div>
+    </section>
+    <!-- Section: Présentation de Vue Component -->
+    <section id="vue-component" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-danger">Vue Component</h2>
+        <p class="lead text-secondary">Explorez les composants Vue.js pour des interactions complexes et dynamiques.</p>
+        <hr class="my-4">
+        <div class="container w-50" {{ vue_component('UserCard', {
+            'name': 'Alex Martin',
+            'age': 25,
+            'title': 'Développeur Web',
+            'image': 'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
+            'description': 'Passionné par les nouvelles technologies et le développement web.'
+        }) }}></div>
+    </section>
+    <!-- Section: Présentation de Chart JS -->
+    <section id="chart-js" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-info">Chart.js</h2>
+        <p class="lead text-secondary">Découvrez les graphiques interactifs pour une visualisation claire et précise des données.</p>
+        <hr class="my-4">
+        {% set chartTitles = {
+            'lineChart': 'Graphique linéaire',
+            'barChart': 'Graphique en barres',
+            'scatterChart': 'Graphique en dispersion',
+            'radarChart': 'Graphique en radar',
+            'pieChart': 'Diagramme de camembert',
+            'doughnutChart': 'Diagramme en anneau',
+            'polarAreaChart': 'Diagramme en zone polaire',
+            'bubbleChart': 'Graphique en bulles'
+        } %}
+        {% for chartKey, chart in charts %}
+            <h3>{{ chartTitles[chartKey] }}</h3>
+            <div class="container w-100">
+                {{ render_chart(chart) }}
+            </div>
+           {% if not loop.last %}
+                <hr class="my-4 border-primary">
+            {% endif %}
+        {% endfor %}
+        <hr class="my-4 border-primary">
+    </section>
+    <!-- Section: Présentation de UX Map -->
+    <section id="ux-map" class="text-center">
+        <h2 class="display-3 fw-bold mb-4 text-secondary">Symfony UX Map</h2>
+        <p class="lead text-secondary">Utilisez Symfony UX Map pour une gestion simplifiée.</p>
+        <hr class="my-4">
+        <div>
+            {# The map must have a defined height #}
+            {{ ux_map(map, {style: 'height: 600px;'}) }}
+        </div>
+    </section>
+</div>
+{% endblock %}
