@@ -1,16 +1,15 @@
 <div {{ attributes }}>
     <form
-            data-action="live#action:prevent"
-            data-live-action-param="saveCategory"
+        data-action="live#action:prevent"
+        data-live-action-param="saveCategory"
     >
-
         <div class="mb-3">
             <label for="category-name">Category name:</label>
             <input
-                    type="text"
-                    data-model="name"
-                    class="form-control {{ _errors.has('name') ? 'is-invalid' }}"
-                    id="category-name"
+                type="text"
+                data-model="name"
+                class="form-control {{ _errors.has('name') ? 'is-invalid' }}"
+                id="category-name"
             >
             {% if _errors.has('name') %}
                 <div class="invalid-feedback">
@@ -18,7 +17,6 @@
                 </div>
             {% endif %}
         </div>
-
         <button type="submit" id="testing-element" class="btn btn-primary">Save</button>
     </form>
 </div>

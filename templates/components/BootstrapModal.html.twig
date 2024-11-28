@@ -4,7 +4,7 @@
     'aria-hidden': 'true',
     id: id ? id : false,
 }) }}
-        data-controller="bootstrap-modal"
+    data-controller="bootstrap-modal"
 >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -14,11 +14,9 @@
                         {% block modal_header %}{% endblock %}
                     </div>
                 {% endif %}
-
                 <div class="modal-body">
                     {% block modal_body %}{% endblock %}
                 </div>
-
                 {% if block('modal_footer') %}
                     <div class="modal-footer">
                         {% block modal_footer %}{% endblock %}

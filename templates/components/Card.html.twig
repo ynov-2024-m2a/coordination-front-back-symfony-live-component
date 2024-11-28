@@ -3,16 +3,15 @@
 <div class="card">
     {% if image is not null %}
         <img class="card-img-top"
-             src="{{ image }}"
-             width="640"
-             height="360"
-             alt="{{ name }}"
-                {% if lazyload %}
-                    loading="lazy"
-                {% endif %}
+            src="{{ image }}"
+            width="640"
+            height="360"
+            alt="{{ name }}"
+            {% if lazyload %}
+                loading="lazy"
+            {% endif %}
         >
     {% endif %}
-
     <div class="card-body">
        <p class="card-title">
            {{ name }}
@@ -21,5 +20,4 @@
             {{- description -}}
         </p>
     </div>
-
 </div>
